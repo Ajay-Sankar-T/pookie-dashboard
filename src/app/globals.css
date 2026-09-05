@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Fredoka:wght@600;700&family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FFF7FB;
+  --foreground: #4A3040;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  overscroll-behavior-y: none;
+}
+
+/* Enable text selection on inputs and content */
+input, textarea, p, span {
+  user-select: text;
+}
+
+/* Custom cute scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF0F6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFB3D1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF6FAE;
+}
+
+/* Glassmorphic cute backdrop */
+.pookie-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Subtle heart sparkle pulse */
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.15); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  70% { transform: scale(1); }
+}
+
+.animate-heartbeat {
+  animation: heartBeat 1.4s ease-in-out infinite;
+}
+
+/* Prevent double-tap zoom on buttons */
+button, a, input, select {
+  touch-action: manipulation;
+}
+
+/* Safe-area helpers for notched phones / native app shells (Expo WebView) */
+.safe-area-pb {
+  padding-bottom: max(0.375rem, env(safe-area-inset-bottom));
+}
+
+.safe-area-pt {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+
+.safe-area-px {
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+}
+
+/* Floating sparkle particle drift, used by <SparkleField> */
+@keyframes sparkleDrift {
+  0% { opacity: 0; transform: translateY(0) scale(0.6) rotate(0deg); }
+  15% { opacity: 1; }
+  50% { opacity: 0.9; transform: translateY(-14px) scale(1) rotate(15deg); }
+  85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-28px) scale(0.7) rotate(-10deg); }
+}
+
+.animate-sparkle-drift {
+  animation-name: sparkleDrift;
+}
+
+/* Holographic shimmer border sweep for hero/kawaii cards */
+.pookie-holo-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.pookie-holo-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(120deg, #FFB3D1, #C9A6FF, #8ED2FF, #FF6FAE, #FFB3D1);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: holoShimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes holoShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Gentle bobbing wiggle for scattered chibi decorations */
+@keyframes chibiBob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+.animate-chibi-bob {
+  animation: chibiBob 2.6s ease-in-out infinite;
+}
+
+/* Glossy shine sweep, layered onto primary CTAs for that anime-glossy pop */
+.pookie-glossy {
+  position: relative;
+  overflow: hidden;
+}
+
+.pookie-glossy::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+
+.pookie-glossy:hover::after {
+  left: 130%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sparkle-drift,
+  .animate-chibi-bob,
+  .pookie-holo-border::before,
+  .pookie-glossy::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+

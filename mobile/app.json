@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Pookie Dashboard",
+    "slug": "pookie-dashboard",
+    "scheme": "pookiedashboard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FFF7FB",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pookie.dashboard"
+    },
+    "android": {
+      "package": "com.pookie.dashboard",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFF0F6",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFF7FB",
+          "image": "./assets/icon.png",
+          "imageWidth": 140
+        }
+      ]
+    ]
+  }
+}
