@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { usePookie } from '@/context/PookieContext';
 import { BottomSheet } from '../ui/BottomSheet';
 import { Button } from '../ui/Button';
@@ -39,9 +39,19 @@ export const QuickExpenseModal: React.FC = () => {
   const [selectedCircleId, setSelectedCircleId] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Initialize or update from preset
+  // Initialize form state only when the sheet actually OPENS (or a fresh
+  // preset is handed to an already-open sheet) — NOT on every render where
+  // `friends`/`activeCircleId` happen to get a new reference (e.g. from the
+  // background 25s poll), which was silently wiping out in-progress edits.
+  const wasOpenRef = useRef(false);
+  const lastPresetRef = useRef(quickExpensePreset);
   useEffect(() => {
-    if (isQuickExpenseOpen) {
+    const justOpened = isQuickExpenseOpen && !wasOpenRef.current;
+    const presetChanged = isQuickExpenseOpen && quickExpensePreset !== lastPresetRef.current;
+    wasOpenRef.current = isQuickExpenseOpen;
+    lastPresetRef.current = quickExpensePreset;
+
+    if (isQuickExpenseOpen && (justOpened || presetChanged)) {
       if (quickExpensePreset) {
         setPayerId(quickExpensePreset.payerId || me.id);
         if (quickExpensePreset.targetFriendIds && quickExpensePreset.targetFriendIds.length > 0) {
