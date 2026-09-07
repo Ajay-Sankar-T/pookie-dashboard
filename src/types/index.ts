@@ -76,11 +76,6 @@ export interface OverallStatus {
   netPaise: number;
 }
 
-export interface SimplifiedDebt {
-  fromFriend: PookieFriend;
-  toFriend: PookieFriend;
-  amountPaise: number;
-}
 
 export type TabType = 'home' | 'foodcourt' | 'ledger' | 'history' | 'profile';
 

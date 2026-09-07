@@ -20,7 +20,7 @@ import { PookieHub } from '@/components/hub/PookieHub';
 import { ProfileTab } from '@/components/profile/ProfileTab';
 import { Transaction } from '@/types';
 import { Heart } from 'lucide-react';
-import { loadProfile } from '@/lib/profile';
+import { hasSeenUpiStep } from '@/lib/profile';
 
 type Screen = 'onboarding' | 'hub' | 'app';
 
@@ -44,8 +44,9 @@ export default function Home() {
       setScreen('onboarding');
       return;
     }
-    const hasUpi = currentUser && (memberProfiles[currentUser.id]?.upiId || loadProfile(currentUser.id)?.upiId);
-    if (!hasUpi) {
+    // UPI is optional — just make sure they've been through the onboarding
+    // step once (whether they added one or skipped it).
+    if (currentUser && !hasSeenUpiStep(currentUser.id) && !memberProfiles[currentUser.id]?.upiId) {
       setScreen('onboarding');
       return;
     }

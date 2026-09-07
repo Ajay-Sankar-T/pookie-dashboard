@@ -5,6 +5,7 @@ import { Mail, Lock, Wallet, ArrowRight, Sparkles } from 'lucide-react';
 import { WaifuMascot } from '../ui/WaifuMascot';
 import { SparkleField } from '../ui/SparkleField';
 import { usePookie } from '@/context/PookieContext';
+import { markUpiStepSeen } from '@/lib/profile';
 
 interface WelcomeOnboardingProps {
   /** Called once login (and, if needed, UPI setup) is complete. */
@@ -14,7 +15,7 @@ interface WelcomeOnboardingProps {
 const UPI_RE = /^[\w.\-]{2,256}@[a-zA-Z]{2,64}$/;
 
 export const WelcomeOnboarding: React.FC<WelcomeOnboardingProps> = ({ onComplete }) => {
-  const { login, setMyUpiId } = usePookie();
+  const { login, setMyUpiId, currentUserId } = usePookie();
   const [step, setStep] = useState<'login' | 'upi'>('login');
 
   // Login step state
@@ -47,6 +48,12 @@ export const WelcomeOnboarding: React.FC<WelcomeOnboardingProps> = ({ onComplete
       return;
     }
     await setMyUpiId(upiId);
+    if (currentUserId) markUpiStepSeen(currentUserId);
+    onComplete();
+  };
+
+  const handleSkipUpi = () => {
+    if (currentUserId) markUpiStepSeen(currentUserId);
     onComplete();
   };
 
@@ -74,7 +81,7 @@ export const WelcomeOnboarding: React.FC<WelcomeOnboardingProps> = ({ onComplete
               <p className="text-sm font-bold text-pookie-dark leading-snug">
                 {step === 'login'
                   ? "Hii Pookie~ ✨ this dashboard is just for the 11 of us. Log in?"
-                  : 'One more thing~ add your UPI so friends can pay you back 💸'}
+                  : 'Want to add your UPI so friends can pay you back? Totally optional 💸'}
               </p>
             </div>
             <h1 className="mt-5 text-2xl sm:text-3xl font-black text-pookie-text font-kawaii tracking-tight">
@@ -148,6 +155,9 @@ export const WelcomeOnboarding: React.FC<WelcomeOnboardingProps> = ({ onComplete
                   autoFocus
                 />
                 {upiError && <p className="text-[11px] font-bold text-rose-500 mt-1">{upiError}</p>}
+                <p className="text-[10px] font-semibold text-pookie-muted/80 mt-1.5">
+                  You can always add this later from your Profile.
+                </p>
               </div>
 
               <button
@@ -155,8 +165,15 @@ export const WelcomeOnboarding: React.FC<WelcomeOnboardingProps> = ({ onComplete
                 className="pookie-glossy w-full flex items-center justify-center gap-2 bg-gradient-to-r from-pookie-primary via-[#FF5E9E] to-pookie-lavender text-white text-sm font-black py-3.5 rounded-2xl shadow-pookie-glow active:scale-[0.97] transition-all"
               >
                 <Sparkles className="w-4 h-4 fill-white stroke-white" />
-                <span>Let&apos;s go, Pookie!</span>
+                <span>Save & Continue</span>
                 <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={handleSkipUpi}
+                className="w-full text-center text-xs font-bold text-pookie-muted hover:text-pookie-dark transition-colors py-1"
+              >
+                Skip for now
               </button>
             </form>
           )}

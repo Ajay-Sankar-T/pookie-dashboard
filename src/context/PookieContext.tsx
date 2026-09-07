@@ -7,7 +7,6 @@ import {
   PookieCircle,
   DirectBalance,
   OverallStatus,
-  SimplifiedDebt,
   TabType,
 } from '@/types';
 import {
@@ -23,7 +22,6 @@ import {
   loadStoredCircles,
   resetAllToSampleData,
 } from '@/lib/storage';
-import { simplifyDebts } from '@/lib/debt-simplification';
 import { loadSession, saveSession, clearSession } from '@/lib/session';
 import { saveProfile as cacheProfileLocally } from '@/lib/profile';
 import { WAIFU_AVATARS } from '@/lib/waifu-avatars';
@@ -90,7 +88,6 @@ interface PookieContextType {
   // Computed balances & summaries
   balances: DirectBalance[];
   overallStatus: OverallStatus;
-  simplifiedDebts: SimplifiedDebt[];
   recentTransactions: Transaction[];
   todayTransactions: Transaction[];
 
@@ -555,11 +552,6 @@ export const PookieProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
   }, [balances]);
 
-  // Simplified debts for current circle or all
-  const simplifiedDebts: SimplifiedDebt[] = useMemo(() => {
-    return simplifyDebts(friends, transactions, activeCircleId || undefined);
-  }, [friends, transactions, activeCircleId]);
-
   // Recent transactions
   const recentTransactions = useMemo(() => {
     const list = activeCircleId
@@ -748,7 +740,6 @@ export const PookieProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     deleteMenuItem,
     balances,
     overallStatus,
-    simplifiedDebts,
     recentTransactions,
     todayTransactions,
     setActiveTab,

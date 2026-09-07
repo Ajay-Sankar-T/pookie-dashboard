@@ -46,3 +46,26 @@ export function clearProfile(memberId: string): void {
     console.error('Failed to clear pookie profile:', err);
   }
 }
+
+// UPI ID is optional — this tracks whether someone has been through the
+// onboarding UPI step at all (entered one OR explicitly skipped it), so we
+// don't keep re-prompting just because they chose not to add one.
+const ONBOARDED_KEY_PREFIX = 'pookie_onboarded_v1_';
+
+export function hasSeenUpiStep(memberId: string): boolean {
+  if (!isClient()) return false;
+  try {
+    return localStorage.getItem(ONBOARDED_KEY_PREFIX + memberId) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export function markUpiStepSeen(memberId: string): void {
+  if (!isClient()) return;
+  try {
+    localStorage.setItem(ONBOARDED_KEY_PREFIX + memberId, 'true');
+  } catch (err) {
+    console.error('Failed to mark onboarding seen:', err);
+  }
+}

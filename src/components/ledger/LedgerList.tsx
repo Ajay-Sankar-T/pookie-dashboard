@@ -5,7 +5,6 @@ import { usePookie } from '@/context/PookieContext';
 import { PookieAvatar } from '../ui/PookieAvatar';
 import { formatCurrency } from '@/lib/currency';
 import { EmptyState } from '../ui/EmptyState';
-import { SimplifiedDebtsCard } from './SimplifiedDebtsCard';
 import { Sparkles, ArrowRight, ChevronRight } from 'lucide-react';
 
 export const LedgerList: React.FC = () => {
@@ -25,9 +24,6 @@ export const LedgerList: React.FC = () => {
 
   return (
     <div className="space-y-5">
-      {/* Smart Circle Debt Simplification banner */}
-      <SimplifiedDebtsCard />
-
       {/* Header */}
       <div className="flex items-center justify-between px-1">
         <div>
